@@ -1,0 +1,125 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.controls label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.controls input, .controls select, .controls button {
+    margin-bottom: 10px;
+}
+
+#explosion-power {
+    width: 150px;
+}
+
+#power-value {
+    display: inline-block;
+    width: 40px;
+    text-align: center;
+    margin-left: 5px;
+}
+
+#demolition-mode {
+    padding: 5px;
+}
+
+#reset-btn {
+    padding: 8px 15px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#reset-btn:hover {
+    background-color: #c0392b;
+}
+
+.simulation-area {
+    position: relative;
+    margin: 20px 0;
+}
+
+#chimney-canvas {
+    border: 2px solid #333;
+    background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.info {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Animation classes for explosion effects */
+@keyframes explode {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.7; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+.explosion-effect {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: explode 0.5s ease-out forwards;
+}
+
+.dust-effect {
+    position: absolute;
+    background-color: rgba(139, 139, 139, 0.6);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.smoke-particle {
+    position: absolute;
+    background-color: rgba(100, 100, 100, 0.5);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.debris-particle {
+    position: absolute;
+    pointer-events: none;
+}
