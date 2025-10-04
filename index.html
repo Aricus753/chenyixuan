@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美味厨房 - 发现美食的乐趣</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义颜色和字体 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#E63946', // 温暖的红色作为主色调
+                        secondary: '#FFB703', // 明亮的黄色作为辅助色
+                        neutral: '#F1FAEE', // 浅灰色作为背景色
+                        dark: '#1D3557', // 深蓝色作为文本色
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral text-dark">
+    <!-- 导航栏 -->
+    <header class="sticky top-0 z-50 bg-white shadow-md transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="flex items-center space-x-2">
+                <i class="fa fa-cutlery text-primary text-2xl"></i>
+                <span class="text-xl font-bold text-primary">美味厨房</span>
+            </a>
+            
+            <!-- 桌面端导航 -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="font-medium hover:text-primary transition-colors">首页</a>
+                <a href="#featured" class="font-medium hover:text-primary transition-colors">特色菜品</a>
+                <a href="#recipes" class="font-medium hover:text-primary transition-colors">推荐食谱</a>
+                <a href="#about" class="font-medium hover:text-primary transition-colors">关于我们</a>
+                <a href="#contact" class="font-medium hover:text-primary transition-colors">联系我们</a>
+            </nav>
+            
+            <!-- 移动端菜单按钮 -->
+            <button class="md:hidden text-dark text-xl" id="menu-toggle">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- 移动端导航菜单 -->
+        <div class="md:hidden hidden bg-white w-full absolute shadow-lg" id="mobile-menu">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-4">
+                <a href="#home" class="font-medium hover:text-primary transition-colors py-2">首页</a>
+                <a href="#featured" class="font-medium hover:text-primary transition-colors py-2">特色菜品</a>
+                <a href="#recipes" class="font-medium hover:text-primary transition-colors py-2">推荐食谱</a>
+                <a href="#about" class="font-medium hover:text-primary transition-colors py-2">关于我们</a>
+                <a href="#contact" class="font-medium hover:text-primary transition-colors py-2">联系我们</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section id="home" class="relative h-[80vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://picsum.photos/id/42/1600/900" alt="美食展示" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-dark/50"></div>
+        </div>
+        <div class="container mx-auto px-4 z-10 text-center">
+            <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-bold text-white mb-4 text-shadow animate-fade-in">
+                发现美食的<span class="text-secondary">无限可能</span>
+            </h1>
+            <p class="text-[clamp(1rem,2vw,1.25rem)] text-white/90 mb-8 max-w-2xl mx-auto">
+                探索世界各地的美食食谱，学习专业烹饪技巧，让每一餐都成为艺术品
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#recipes" class="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-lg transition-all shadow-lg hover:shadow-xl">
+                    浏览食谱
+                </a>
+                <a href="#featured" class="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-medium px-6 py-3 rounded-lg transition-all border border-white/40">
+                    特色菜品
+                </a>
+            </div>
+        </div>
+        
+        <!-- 向下滚动指示 -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+            <i class="fa fa-chevron-down text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- 特色菜品区域 -->
+    <section id="featured" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-4">本周特色菜品</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">我们的厨师精心打造的当季特色，每一道都融合了传统与创新</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 菜品卡片1 -->
+                <div class="bg-neutral rounded-xl overflow-hidden shadow-md card-hover">
+                    <div class="h-60 overflow-hidden">
+                        <img src="https://picsum.photos/id/292/600/400" alt="香煎三文鱼配柠檬黄油酱" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-xl font-bold">香煎三文鱼</h3>
+                            <span class="bg-secondary/20 text-dark px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fa fa-star text-secondary"></i> 招牌
+                            </span>
+                        </div>
+                        <p class="text-gray-600 mb-4">挪威三文鱼配以自制柠檬黄油酱，口感鲜嫩多汁</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-primary font-bold text-xl">¥88</span>
+                            <button class="bg-primary/10 hover:bg-primary/20 text-primary px-4 py-2 rounded-lg transition-colors">
+                                <i class="fa fa-shopping-cart mr-1"></i> 加入购物车
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 菜品卡片2 -->
+                <div class="bg-neutral rounded-xl overflow-hidden shadow-md card-hover">
+                    <div class="h-60 overflow-hidden">
+                        <img src="https://picsum.photos/id/431/600/400" alt="意大利松露奶油意面" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-xl font-bold">松露奶油意面</h3>
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fa fa-leaf"></i> 人气
+                            </span>
+                        </div>
+                        <p class="text-gray-600 mb-4">进口意大利面搭配新鲜松露和特制奶油酱汁</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-primary font-bold text-xl">¥68</span>
+                            <button class="bg-primary/10 hover:bg-primary/20 text-primary px-4 py-2 rounded-lg transition-colors">
+                                <i class="fa fa-shopping-cart mr-1"></i> 加入购物车
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 菜品卡片3 -->
+                <div class="bg-neutral rounded-xl overflow-hidden shadow-md card-hover">
+                    <div class="h-60 overflow-hidden">
+                        <img src="https://picsum.photos/id/312/600/400" alt="法式巧克力舒芙蕾" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-xl font-bold">巧克力舒芙蕾</h3>
+                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fa fa-heart"></i> 甜点
+                            </span>
+                        </div>
+                        <p class="text-gray-600 mb-4">外酥内软的经典法式甜点，搭配香草冰淇淋</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-primary font-bold text-xl">¥42</span>
+                            <button class="bg-primary/10 hover:bg-primary/20 text-primary px-4 py-2 rounded-lg transition-colors">
+                                <i class="fa fa-shopping-cart mr-1"></i> 加入购物车
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="inline-flex items-center text-primary font-medium hover:underline">
+                    查看全部菜品 <i class="fa fa-long-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 推荐食谱区域 -->
+    <section id="recipes" class="py-20 bg-neutral">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-4">精选食谱</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">在家也能做出美味佳肴，详细步骤让烹饪变得简单</p>
+            </div>
+            
+            <!-- 食谱分类标签 -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                <button class="bg-primary text-white px-5 py-2 rounded-full text-sm font-medium">全部食谱</button>
+                <button class="bg-white hover:bg-gray-100 px-5 py-2 rounded-full text-sm font-medium transition-colors">家常菜</button>
+                <button class="bg-white hover:bg-gray-100 px-5 py-2 rounded-full text-sm font-medium transition-colors">甜点烘焙</button>
+                <button class="bg-white hover:bg-gray-100 px-5 py-2 rounded-full text-sm font-medium transition-colors">素食料理</button>
+                <button class="bg-white hover:bg-gray-100 px-5 py-2 rounded-full text-sm font-medium transition-colors">快手料理</button>
+                <button class="bg-white hover:bg-gray-100 px-5 py-2 rounded-full text-sm font-medium transition-colors">异国风味</button>
+            </div>
+            
+            <!-- 食谱列表 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 食谱1 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md flex flex-col md:flex-row card-hover">
+                    <div class="md:w-1/3 h-48 md:h-auto">
+                        <img src="https://picsum.photos/id/488/400/400" alt="番茄炒蛋" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6 md:w-2/3">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-medium">家常菜</span>
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">15分钟</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">完美番茄炒蛋</h3>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">经典家常菜的升级版，鸡蛋嫩滑，番茄酸甜可口，汤汁浓郁，配米饭绝佳。</p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <div class="flex items-center gap-3">
+                                <div class="flex items-center text-amber-400">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                    <span class="text-gray-600 ml-1 text-sm">4.5</span>
+                                </div>
+                                <span class="text-gray-500 text-sm"><i class="fa fa-user-o mr-1"></i> 3.2k</span>
+                            </div>
+                            <a href="#" class="text-primary hover:text-primary/80 font-medium text-sm">查看详情</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 食谱2 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md flex flex-col md:flex-row card-hover">
+                    <div class="md:w-1/3 h-48 md:h-auto">
+                        <img src="https://picsum.photos/id/225/400/400" alt="草莓奶油蛋糕" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6 md:w-2/3">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded text-xs font-medium">甜点烘焙</span>
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">60分钟</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">草莓奶油蛋糕</h3>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">松软的海绵蛋糕搭配新鲜草莓和轻盈奶油，口感丰富，甜而不腻，适合派对。</p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <div class="flex items-center gap-3">
+                                <div class="flex items-center text-amber-400">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <span class="text-gray-600 ml-1 text-sm">5.0</span>
+                                </div>
+                                <span class="text-gray-500 text-sm"><i class="fa fa-user-o mr-1"></i> 5.7k</span>
+                            </div>
+                            <a href="#" class="text-primary hover:text-primary/80 font-medium text-sm">查看详情</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 食谱3 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md flex flex-col md:flex-row card-hover">
+                    <div class="md:w-1/3 h-48 md:h-auto">
+                        <img src="https://picsum.photos/id/365/400/400" alt="牛油果沙拉" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6 md:w-2/3">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">素食料理</span>
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">10分钟</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">健康牛油果沙拉</h3>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">新鲜牛油果搭配混合生菜、樱桃番茄和特制柠檬汁，健康低卡，适合减脂期。</p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <div class="flex items-center gap-3">
+                                <div class="flex items-center text-amber-400">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <span class="text-gray-600 ml-1 text-sm">4.0</span>
+                                </div>
+                                <span class="text-gray-500 text-sm"><i class="fa fa-user-o mr-1"></i> 2.8k</span>
+                            </div>
+                            <a href="#" class="text-primary hover:text-primary/80 font-medium text-sm">查看详情</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 食谱4 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md flex flex-col md:flex-row card-hover">
+                    <div class="md:w-1/3 h-48 md:h-auto">
+                        <img src="https://picsum.photos/id/429/400/400" alt="日式拉面" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6 md:w-2/3">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-medium">异国风味</span>
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">45分钟</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">家常日式拉面</h3>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">浓郁的猪骨汤底，手工拉制面条，搭配叉烧、溏心蛋和海苔，还原正宗日式风味。</p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <div class="flex items-center gap-3">
+                                <div class="flex items-center text-amber-400">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                    <span class="text-gray-600 ml-1 text-sm">4.7</span>
+                                </div>
+                                <span class="text-gray-500 text-sm"><i class="fa fa-user-o mr-1"></i> 4.1k</span>
+                            </div>
+                            <a href="#" class="text-primary hover:text-primary/80 font-medium text-sm">查看详情</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-lg transition-all inline-block">
+                    查看更多食谱
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我们 -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/2">
+                    <img src="https://picsum.photos/id/493/800/600" alt="我们的厨房" class="w-full h-auto rounded-xl shadow-lg">
+                </div>
+                <div class="lg:w-1/2">
+                    <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-6">关于美味厨房</h2>
+                    <p class="text-gray-600 mb-4">美味厨房成立于2015年，是一家致力于传播美食文化、分享烹饪技巧的平台。我们相信美食不仅是味蕾的享受，更是生活的艺术。</p>
+                    <p class="text-gray-600 mb-6">我们的团队由资深厨师、美食博主和营养学专家组成，精心挑选和创作每一道食谱，确保它们既美味可口又易于制作。</p>
+                    
+                    <div class="grid grid-cols-2 gap-6 mb-8">
+                        <div class="flex items-start">
+                            <div class="bg-primary/10 p-3 rounded-lg mr-4">
+                                <i class="fa fa-cutlery text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">专业厨师</h3>
+                                <p class="text-gray-600 text-sm">资深厨师团队研发</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-primary/10 p-3 rounded-lg mr-4">
+                                <i class="fa fa-leaf text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">新鲜食材</h3>
+                                <p class="text-gray-600 text-sm">精选优质新鲜食材</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-primary/10 p-3 rounded-lg mr-4">
+                                <i class="fa fa-book text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">详细教程</h3>
+                                <p class="text-gray-600 text-sm">步骤清晰易于操作</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-primary/10 p-3 rounded-lg mr-4">
+                                <i class="fa fa-users text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">社区互动</h3>
+                                <p class="text-gray-600 text-sm">分享烹饪心得体验</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="inline-flex items-center text-primary font-medium hover:underline">
+                        了解更多 <i class="fa fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 订阅区域 -->
+    <section class="py-16 bg-primary/10">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold mb-4">订阅我们的美食资讯</h2>
+                <p class="text-gray-600 mb-8">获取最新的食谱、烹饪技巧和独家优惠，每周发送到您的邮箱</p>
+                
+                <form class="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
+                    <input type="email" placeholder="输入您的邮箱地址" class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50">
+                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-lg transition-all whitespace-nowrap">
+                        立即订阅
+                    </button>
+                </form>
+                
+                <p class="text-gray-500 text-sm mt-4">我们尊重您的隐私，不会向第三方分享您的信息</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我们 -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-4">联系我们</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">有任何问题或建议？请随时与我们联系，我们将尽快回复您</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="bg-neutral p-8 rounded-xl h-full">
+                        <h3 class="text-xl font-bold mb-6">联系方式</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="bg-primary/10 p-3 rounded-lg mr-4">
+                                    <i class="fa fa-map-marker text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">地址</h4>
+                                    <p class="text-gray-600">北京市朝阳区建国路88号美味大厦15层</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="bg-primary/10 p-3 rounded-lg mr-4">
+                                    <i class="fa fa-phone text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">电话</h4>
+                                    <p class="text-gray-600">010-12345678</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="bg-primary/10 p-3 rounded-lg mr-4">
+                                    <i class="fa fa-envelope text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">邮箱</h4>
+                                    <p class="text-gray-600">info@meiweirecipes.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="bg-primary/10 p-3 rounded-lg mr-4">
+                                    <i class="fa fa-clock-o text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">工作时间</h4>
+                                    <p class="text-gray-600">周一至周五: 9:00 - 18:00</p>
+                                    <p class="text-gray-600">周六至周日: 10:00 - 16:00</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h4 class="font-bold mb-4">关注我们</h4>
+                            <div class="flex space-x-4">
+                                <a href="#" class="bg-primary/10 hover:bg-primary/20 text-primary w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                                    <i class="fa fa-weixin"></i>
+                                </a>
+                                <a href="#" class="bg-primary/10 hover:bg-primary/20 text-primary w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                                    <i class="fa fa-weibo"></i>
+                                </a>
+                                <a href="#" class="bg-primary/10 hover:bg-primary/20 text-primary w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                                    <i class="fa fa-instagram"></i>
+                                </a>
+                                <a href="#" class="bg-primary/10 hover:bg-primary/20 text-primary w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                                    <i class="fa fa-youtube-play"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-3">
+                    <form class="bg-neutral p-8 rounded-xl">
+                        <h3 class="text-xl font-bold mb-6">发送消息</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="name" class="block text-gray-700 font-medium mb-2">姓名</label>
+                                <input type="text" id="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="您的姓名">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-gray-700 font-medium mb-2">邮箱</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="您的邮箱">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="subject" class="block text-gray-700 font-medium mb-2">主题</label>
+                            <input type="text" id="subject" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="消息主题">
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 font-medium mb-2">消息内容</label>
+                            <textarea id="message" rows="5" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入您的消息内容..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-lg transition-all">
+                            发送消息
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center space-x-2 mb-6">
+                        <i class="fa fa-cutlery text-primary text-2xl"></i>
+                        <span class="text-xl font-bold text-white">美味厨房</span>
+                    </div>
+                    <p class="text-gray-400 mb-6">探索美食的无限可能，让每一餐都成为艺术品</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fa fa-weixin text-lg"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fa fa-weibo text-lg"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fa fa-instagram text-lg"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fa fa-youtube-play text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-6">快速链接</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#home" class="text-gray-400 hover:text-primary transition-colors">首页</a></li>
+                        <li><a href="#featured" class="text-gray-400 hover:text-primary transition-colors">特色菜品</a></li>
+                        <li><a href="#recipes" class="text-gray-400 hover:text-primary transition-colors">推荐食谱</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-primary transition-colors">关于我们</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-primary transition-colors">联系我们</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-6">食谱分类</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">家常菜</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">甜点烘焙</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">素食料理</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">快手料理</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">异国风味</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-6">联系我们</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fa fa-map-marker text-primary mt-1 mr-3"></i>
+                            <span class="text-gray-400">北京市朝阳区建国路88号美味大厦15层</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-phone text-primary mr-3"></i>
+                            <span class="text-gray-400">010-12345678</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-envelope text-primary mr-3"></i>
+                            <span class="text-gray-400">info@meiweirecipes.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-500 text-sm mb-4 md:mb-0">© 2023 美味厨房. 保留所有权利.</p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-500 hover:text-gray-400 text-sm">隐私政策</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-400 text-sm">使用条款</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-400 text-sm">Cookie政策</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-2', 'shadow-lg');
+                navbar.classList.remove('py-3', 'shadow-md');
+            } else {
+                navbar.classList.add('py-3', 'shadow-md');
+                navbar.classList.remove('py-2', 'shadow-lg');
+            }
+        });
+        
+        // 移动端菜单切换
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            // 切换图标
+            const icon = menuToggle.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // 关闭移动端菜单（如果打开）
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    const icon = menuToggle.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // 图片加载动画
+        document.addEventListener('DOMContentLoaded', () => {
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                img.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                img.onload = function() {
+                    this.classList.remove('opacity-0');
+                    this.classList.add('opacity-100');
+                }
+                // 如果图片已经缓存
+                if (img.complete) {
+                    img.classList.remove('opacity-0');
+                    img.classList.add('opacity-100');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
