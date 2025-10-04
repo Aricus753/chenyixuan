@@ -1,69 +1,283 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solar System Simulation</title>
-    <link rel="stylesheet" href="solar_system.css">
+    <title>太阳系行星运转模拟</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        
+        #solar-system {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .sun {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #ffd700, #ff8c00, #ff4500);
+            border-radius: 50%;
+            box-shadow: 0 0 50px #ff4500, 0 0 100px #ff8c00;
+            z-index: 10;
+        }
+        
+        .orbit {
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform-style: preserve-3d;
+        }
+        
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            transform-origin: center;
+        }
+        
+        .mercury {
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(to right, #a9a9a9, #696969);
+        }
+        
+        .venus {
+            width: 15px;
+            height: 15px;
+            background: linear-gradient(to right, #e39e1c, #b8860b);
+        }
+        
+        .earth {
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(to right, #1e90ff, #32cd32);
+        }
+        
+        .mars {
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(to right, #ff4500, #8b0000);
+        }
+        
+        .jupiter {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(to right, #d8ca9d, #c19e6b, #a87b47);
+        }
+        
+        .saturn {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(to right, #fad5a5, #dba46d);
+        }
+        
+        .saturn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50px;
+            height: 10px;
+            background: rgba(210, 180, 140, 0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotate(20deg);
+            z-index: -1;
+        }
+        
+        .uranus {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(to right, #4fd0e7, #57c6e8);
+        }
+        
+        .neptune {
+            width: 19px;
+            height: 19px;
+            background: linear-gradient(to right, #4b70dd, #304dbd);
+        }
+        
+        .controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            z-index: 100;
+        }
+        
+        button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+        
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 300px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Solar System Simulation</h1>
+    <div id="solar-system">
+        <div class="sun"></div>
+        
+        <!-- 水星轨道 -->
+        <div class="orbit" style="width: 140px; height: 140px;">
+            <div class="planet mercury"></div>
+        </div>
+        
+        <!-- 金星轨道 -->
+        <div class="orbit" style="width: 180px; height: 180px;">
+            <div class="planet venus"></div>
+        </div>
+        
+        <!-- 地球轨道 -->
+        <div class="orbit" style="width: 220px; height: 220px;">
+            <div class="planet earth"></div>
+        </div>
+        
+        <!-- 火星轨道 -->
+        <div class="orbit" style="width: 260px; height: 260px;">
+            <div class="planet mars"></div>
+        </div>
+        
+        <!-- 木星轨道 -->
+        <div class="orbit" style="width: 340px; height: 340px;">
+            <div class="planet jupiter"></div>
+        </div>
+        
+        <!-- 土星轨道 -->
+        <div class="orbit" style="width: 400px; height: 400px;">
+            <div class="planet saturn"></div>
+        </div>
+        
+        <!-- 天王星轨道 -->
+        <div class="orbit" style="width: 460px; height: 460px;">
+            <div class="planet uranus"></div>
+        </div>
+        
+        <!-- 海王星轨道 -->
+        <div class="orbit" style="width: 520px; height: 520px;">
+            <div class="planet neptune"></div>
+        </div>
+        
         <div class="controls">
-            <label for="speed">Simulation Speed:</label>
-            <input type="range" id="speed" min="0.1" max="5" step="0.1" value="1">
-            <span id="speed-value">1x</span>
+            <button id="speedUp">加速</button>
+            <button id="slowDown">减速</button>
+            <button id="pauseResume">暂停/继续</button>
         </div>
-        <div class="solar-system">
-            <!-- Sun at the center -->
-            <div class="sun"></div>
-
-            <!-- Mercury -->
-            <div class="orbit mercury-orbit">
-                <div class="planet mercury"></div>
-            </div>
-
-            <!-- Venus -->
-            <div class="orbit venus-orbit">
-                <div class="planet venus"></div>
-            </div>
-
-            <!-- Earth -->
-            <div class="orbit earth-orbit">
-                <div class="planet earth"></div>
-            </div>
-
-            <!-- Mars -->
-            <div class="orbit mars-orbit">
-                <div class="planet mars"></div>
-            </div>
-
-            <!-- Jupiter -->
-            <div class="orbit jupiter-orbit">
-                <div class="planet jupiter"></div>
-            </div>
-
-            <!-- Saturn -->
-            <div class="orbit saturn-orbit">
-                <div class="planet saturn">
-                    <div class="saturn-ring"></div>
-                </div>
-            </div>
-
-            <!-- Uranus -->
-            <div class="orbit uranus-orbit">
-                <div class="planet uranus"></div>
-            </div>
-
-            <!-- Neptune -->
-            <div class="orbit neptune-orbit">
-                <div class="planet neptune"></div>
-            </div>
-        </div>
+        
         <div class="info">
-            <p>Drag to rotate the view | Scroll to zoom</p>
+            <h3>太阳系行星信息</h3>
+            <p><strong>水星：</strong>离太阳最近，公转周期88天</p>
+            <p><strong>金星：</strong>最热的行星，自转方向与其他行星相反</p>
+            <p><strong>地球：</strong>我们的家园，唯一已知有生命的行星</p>
+            <p><strong>火星：</strong>红色星球，有太阳系最高的火山</p>
+            <p><strong>木星：</strong>最大的行星，有79颗已知卫星</p>
+            <p><strong>土星：</strong>有美丽的光环系统</p>
+            <p><strong>天王星：</strong>躺着自转的冰巨星</p>
+            <p><strong>海王星：</strong>最远的气态行星，风速最高</p>
         </div>
     </div>
-    <script src="solar_system.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const planets = document.querySelectorAll('.planet');
+            const speedUpBtn = document.getElementById('speedUp');
+            const slowDownBtn = document.getElementById('slowDown');
+            const pauseResumeBtn = document.getElementById('pauseResume');
+            
+            let speedFactor = 1;
+            let paused = false;
+            let animations = [];
+            
+            // 行星公转周期（相对地球）
+            const planetData = [
+                { name: '水星', period: 0.24, size: 140 },
+                { name: '金星', period: 0.62, size: 180 },
+                { name: '地球', period: 1, size: 220 },
+                { name: '火星', period: 1.88, size: 260 },
+                { name: '木星', period: 11.86, size: 340 },
+                { name: '土星', period: 29.46, size: 400 },
+                { name: '天王星', period: 84.01, size: 460 },
+                { name: '海王星', period: 164.8, size: 520 }
+            ];
+            
+            // 初始化行星动画
+            planets.forEach((planet, index) => {
+                const size = planetData[index].size;
+                const period = planetData[index].period;
+                
+                // 创建动画
+                const animation = planet.animate([
+                    { transform: 'translateX(-50%) rotateZ(0deg) translateX(' + (size/2) + 'px) rotateZ(0deg)' },
+                    { transform: 'translateX(-50%) rotateZ(360deg) translateX(' + (size/2) + 'px) rotateZ(-360deg)' }
+                ], {
+                    duration: (365 / period) * 100 / speedFactor,
+                    iterations: Infinity,
+                    easing: 'linear'
+                });
+                
+                animations.push(animation);
+            });
+            
+            // 控制按钮事件
+            speedUpBtn.addEventListener('click', () => {
+                speedFactor *= 1.5;
+                updateAnimationSpeed();
+            });
+            
+            slowDownBtn.addEventListener('click', () => {
+                speedFactor /= 1.5;
+                updateAnimationSpeed();
+            });
+            
+            pauseResumeBtn.addEventListener('click', () => {
+                paused = !paused;
+                if (paused) {
+                    animations.forEach(anim => anim.pause());
+                } else {
+                    animations.forEach(anim => anim.play());
+                }
+            });
+            
+            function updateAnimationSpeed() {
+                planets.forEach((planet, index) => {
+                    const period = planetData[index].period;
+                    animations[index].playbackRate = speedFactor * (period / 365) * 100;
+                });
+            }
+        });
+    </script>
 </body>
 </html>
+
+
+
